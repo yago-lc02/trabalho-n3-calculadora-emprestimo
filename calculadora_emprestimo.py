@@ -29,6 +29,13 @@ class CalculadoraEmprestimo:
         PerfilUsuario.PROFESSOR: (10, 45),
     }
 
+    # Constantes financeiras de multas
+    DIAS_TOLERANCIA_ISENCAO: int = 3
+    LIMITE_DIAS_FAIXA_PADRAO: int = 10
+    VALOR_DIARIA_PADRAO: float = 2.50
+    VALOR_DIARIA_EXCEDENTE: float = 5.00
+    TETO_MAXIMO_MULTA: float = 150.00
+
     def validar_emprestimo(
         self,
         perfil: PerfilUsuario,
@@ -71,4 +78,28 @@ class CalculadoraEmprestimo:
         dias_atraso: int,
         perfil: PerfilUsuario
     ) -> float:
-        raise NotImplementedError("Método ainda não implementado no ciclo TDD")
+        # Validação de perfil válido
+        if not isinstance(perfil, PerfilUsuario):
+            raise ValueError("Perfil de usuário inválido ou nulo.")
+
+        # Validação de dias de atraso
+        if not isinstance(dias_atraso, int) or dias_atraso < 0:
+            raise ValueError("A quantidade de dias de atraso deve ser um inteiro não-negativo.")
+
+        # 0 a 3 dias de atraso: tolerância total
+        if dias_atraso <= self.DIAS_TOLERANCIA_ISENCAO:
+            return 0.0
+
+        # 4 a 10 dias de atraso: R$ 2,50/dia desde o 1º dia
+        if dias_atraso <= self.LIMITE_DIAS_FAIXA_PADRAO:
+            multa_calculada = dias_atraso * self.VALOR_DIARIA_PADRAO
+        else:
+            # Acima de 10 dias: 10 primeiros dias a R$ 2,50 + R$ 5,00 por dia excedente
+            dias_excedentes = dias_atraso - self.LIMITE_DIAS_FAIXA_PADRAO
+            multa_calculada = (
+                (self.LIMITE_DIAS_FAIXA_PADRAO * self.VALOR_DIARIA_PADRAO) +
+                (dias_excedentes * self.VALOR_DIARIA_EXCEDENTE)
+            )
+
+        # Aplicação do teto máximo de R$ 150,00
+        return min(multa_calculada, self.TETO_MAXIMO_MULTA)
