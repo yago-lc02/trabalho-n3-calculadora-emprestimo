@@ -5,4 +5,4 @@ __pycache__/
 .coverage
 htmlcov/
 *.docx
-.gerar_relatorio.py
+gerar_relatorio_pdf.py
