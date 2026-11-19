@@ -56,7 +56,9 @@ class CalculadoraEmprestimo:
 
         # Bloqueio por pendência financeira ou atraso anterior
         if possui_pendencias:
-            raise RegraNegocioException("Empréstimo recusado: usuário possui pendência financeira ou atraso ativo.")
+            raise RegraNegocioException(
+                "Empréstimo recusado: usuário possui pendência financeira ou atraso ativo."
+            )
 
         limite_max, prazo_dias = self.REGRAS_PERFIL[perfil]
         total_livros = livros_emprestados + livros_solicitados
@@ -64,7 +66,8 @@ class CalculadoraEmprestimo:
         # Bloqueio por estouro de limite da categoria
         if total_livros > limite_max:
             raise RegraNegocioException(
-                f"Empréstimo recusado: a quantidade solicitada ultrapassa o limite máximo de {limite_max} livros para {perfil.value}."
+                f"Empréstimo recusado: quantidade ultrapassa o limite máximo "
+                f"de {limite_max} livros para {perfil.value}."
             )
 
         return ResultadoEmprestimo(
