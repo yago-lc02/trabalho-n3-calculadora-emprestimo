@@ -4,7 +4,7 @@ Projeto desenvolvido para a disciplina de **Testes Automatizados (ESW427)** do c
 
 * **Docente**: Profa. Vanessa Marques Alves da Silva Lima
 * **Discente**: Yago Lemes da Cruz
-* **Semestre**: 8º Período - 02/2026
+* **Semestre**: 7º Período - 02/2026
 
 ## Sobre o Projeto
 O componente `CalculadoraEmprestimo` gerencia:
